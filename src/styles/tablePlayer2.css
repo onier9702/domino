@@ -1,0 +1,45 @@
+
+.portionTable{
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+h3{
+    color: blue;
+    margin-bottom: 20px;
+}
+.list-chips{
+    display: flex;
+    width: 100%;
+}
+.list-chips .slider{
+    display: flex;
+    /* flex-direction: row; */
+}
+.list-chips .slider ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    width: fit-content;
+}
+.list-chips .slider ul li{
+    margin-right: 0px;
+    width: fit-content;
+}
+
+.list-chips .slider ul li img{
+    height: 100px;
+    width: 70px;
+}
+.list-chips .slider ul li img:hover{
+    cursor: pointer;
+}
+
+.ulBtn{
+    position: fixed;
+    top: 50%;
+    right: 0%;
+}
