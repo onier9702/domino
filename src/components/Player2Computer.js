@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../styles/tablePlayer2.css';
 import { determinateSideAndFindChip, setFindedChip, startDeleteChip, startResetGame } from '../slices/dataPlayers/thunks';
 import { setChipId } from '../slices/gameController/controllerSlice';
-import { setOffOneTurn, setOneTurn, setTiedGame, setTurnOffComputer, setTurnOffTiedGame } from '../slices/ui/uiSlice';
+import { setTiedGame, setTurnOffComputer, setTurnOffTiedGame } from '../slices/ui/uiSlice';
 import Swal from 'sweetalert2';
 import { hasPlayerAnyValidChip } from '../helpers/hasPLayerValidChip';
 
@@ -66,7 +66,7 @@ export const Player2Computer = () => {
         case 'Both':
             setShowButton(true);
             console.log('here I put turn on true, case Both');
-            dispatch( setOneTurn());
+            // dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
 
             break;
@@ -74,7 +74,7 @@ export const Player2Computer = () => {
         case 'Left':
             dispatch( setFindedChip( chip, 'Left', table, value ) );
             dispatch( startDeleteChip( id, 'player1' ));
-            dispatch( setOneTurn());
+            // dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
             // dispatch( setTurnOffComputer());
             break;
@@ -82,7 +82,7 @@ export const Player2Computer = () => {
         case 'Right':
             dispatch( setFindedChip( chip, 'Right', table, value ) );
             dispatch( startDeleteChip( id, 'player1' ));
-            dispatch( setOneTurn());
+            // dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
             // dispatch( setTurnOffComputer());
             break;
@@ -90,7 +90,7 @@ export const Player2Computer = () => {
         case 'First Strike':
             dispatch( setFindedChip( chip, 'First Strike', table, value ) );
             dispatch( startDeleteChip( id, 'player1' ));
-            dispatch( setOneTurn());
+            // dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
             // dispatch( setTurnOffComputer());
             break;
@@ -160,7 +160,7 @@ export const Player2Computer = () => {
     if ( value[0] ){
       if ( !hasPlayerAnyValidChip( value, initialDataPlayer1) ){
         if ( !oneTurn ){
-          dispatch(setOneTurn());
+          // dispatch(setOneTurn());
         }
         if ( wasValidClick ){
           setWasValidClick(false);
@@ -170,7 +170,7 @@ export const Player2Computer = () => {
       };
     };
     if ( value[0] && wasValidClick){
-      dispatch( setOneTurn());
+      // dispatch( setOneTurn());
     };
 
     setWasValidClick(false);

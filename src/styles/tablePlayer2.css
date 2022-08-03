@@ -51,6 +51,8 @@ h3{
 }
 
 .ulBtn{
+    /* display: flex;
+    flex-direction: column; */
     position: fixed;
     top: 30%;
     right: 0%;
@@ -62,3 +64,13 @@ h3{
     cursor: pointer;
     margin-right: 30px;
 }
+
+@media (max-width: 530px){
+    .list-chips .slider .ulBtn {
+        display: flex;
+        flex-direction: column;
+    }
+    .list-chips .slider .ulBtn li{
+        margin-bottom: 15px;
+    }
+} 

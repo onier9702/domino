@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
    turnComputer: null,
    tied: 0,
-   oneTurn: true,
+   // oneTurn: true,
    both: false,
    endGame: false,
 }
@@ -44,9 +44,9 @@ export const uiSlice = createSlice({
          state.endGame = false;
       },
 
-      setOneTurn: (state) => {
-         state.oneTurn = !state.oneTurn;
-      },
+      // setOneTurn: (state) => {
+      //    state.oneTurn = !state.oneTurn;
+      // },
       // setOffOneTurn: (state) => {
       //    state.oneTurn = true;
       // },
@@ -56,7 +56,7 @@ export const uiSlice = createSlice({
          state.tied = 0;
          state.endGame = false;
          state.both = false;
-         state.oneTurn = true;
+         // state.oneTurn = true;
       },
 
   },
@@ -71,7 +71,7 @@ export const { setBothTrue,
                setTurnOffTiedGame,
                setEndGame,
                setOffEndGame,
-               setOneTurn,
+               // setOneTurn,
                
                
                /*setTurnPlayer2, 

@@ -12,7 +12,7 @@ import '../styles/tablePlayer2.css';
 export const TablePlayer2 = () => {
 
     const dispatch = useDispatch();
-    const { turnComputer, tied, oneTurn } = useSelector( state => state.ui);
+    const { turnComputer, tied } = useSelector( state => state.ui);
 
     const { initialDataPlayer2 } = useSelector( state => state.data);
     const { value, table, pastValue, chipSel, id } = useSelector( state => state.count);
@@ -20,7 +20,16 @@ export const TablePlayer2 = () => {
     const [condit, setCondit] = useState('');
     const [showPlayerChips, setShowPlayerChips] = useState(false);
     const [wasValidClick, setWasValidClick] = useState(false);
+    const [oneTurn, setOneTurn] = useState(true);
     
+    // to verify if it is a new game
+    useEffect(() => {
+
+        if (value.length === 0){
+          setOneTurn(true);
+        }
+    
+    }, [oneTurn, setOneTurn])
 
     useEffect(() => {
 
@@ -72,7 +81,8 @@ export const TablePlayer2 = () => {
     
                 case 'Both':
                     setShowButton(true);
-                    dispatch( setOneTurn());
+                    // dispatch( setOneTurn());
+                    setOneTurn(false);
                     setWasValidClick(true); // a chip was selected correctly
                     // dispatch( setFindedChip( chip, 'Right', table, value ) );
                     // dispatch( startDeleteChip( id, 'player2' ));
@@ -81,7 +91,8 @@ export const TablePlayer2 = () => {
                 case 'Left':
                     dispatch( setFindedChip( chip, 'Left', table, value ) );
                     dispatch( startDeleteChip( id, 'player2' ));
-                    dispatch( setOneTurn());
+                    setOneTurn(false);
+                    // dispatch( setOneTurn());
                     setWasValidClick(true); // a chip was selected correctly
                     // dispatch(setTurnOffPlayer2());
                    break;
@@ -89,7 +100,8 @@ export const TablePlayer2 = () => {
                 case 'Right':
                     dispatch( setFindedChip( chip, 'Right', table, value ) );
                     dispatch( startDeleteChip( id, 'player2' ));
-                    dispatch( setOneTurn());
+                    setOneTurn(false);
+                    // dispatch( setOneTurn());
                     setWasValidClick(true); // a chip was selected correctly
                     // dispatch(setTurnOffPlayer2());
                    break;
@@ -97,7 +109,8 @@ export const TablePlayer2 = () => {
                 case 'First Strike':
                     dispatch( setFindedChip( chip, 'First Strike', table, value ) );
                     dispatch( startDeleteChip( id, 'player2' ));
-                    dispatch( setOneTurn());
+                    setOneTurn(false);
+                    // dispatch( setOneTurn());
                     setWasValidClick(true); // a chip was selected correctly
                     // dispatch(setTurnOffPlayer2());
                    break;
@@ -163,7 +176,8 @@ export const TablePlayer2 = () => {
         if ( value[0] ){
             if ( !hasPlayerAnyValidChip( value, initialDataPlayer2) ){
                 if ( !oneTurn ){
-                    dispatch(setOneTurn());
+                    // dispatch(setOneTurn());
+                    setOneTurn(true);
                 }
                 if ( wasValidClick ){
                   setWasValidClick(false);
@@ -173,11 +187,17 @@ export const TablePlayer2 = () => {
             };
         };
         if ( value[0] && wasValidClick){
-            dispatch( setOneTurn());
+            setOneTurn(true);
+            setWasValidClick(false);
+            return;
         };
 
-        setWasValidClick(false);
+        if ( !oneTurn ){
+            setOneTurn(true);
+        }
 
+        setWasValidClick(false);
+        
     };
 
 

@@ -34,3 +34,15 @@
     -o-transform: rotate(90deg);
     transform: rotate(90deg); 
 }
+
+@media (max-width: 530px){
+    .gameTable{
+        height: 60vh;
+        width: 60vw;
+    }
+    .gameTable ul li img{
+        height: 40px;
+        width: 50px;
+        
+    }
+}
