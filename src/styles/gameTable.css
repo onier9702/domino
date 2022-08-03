@@ -1,7 +1,10 @@
 
 .gameTable{
+    align-items: center;
+    display: flex;
+    justify-content: center;
     margin: 10px 0px 10px 0px;
-    padding: 0px 10px 0px 10px;
+    /* padding: 0px 10px 0px 10px; */
     height: 40vh;
     width: 80vw;
 }
@@ -38,11 +41,11 @@
 @media (max-width: 530px){
     .gameTable{
         height: 60vh;
-        width: 60vw;
+        /* width: 60vw; */
     }
     .gameTable ul li img{
         height: 40px;
-        width: 50px;
+        width: 60px;
         
     }
 }

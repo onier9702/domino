@@ -9,6 +9,7 @@
     border-radius: 10px;
     background-color: aquamarine;
     cursor: pointer;
+    margin: 5px 0px 5px 0px;
     margin-right: 30px;
 }
 .portionTable{
@@ -43,7 +44,7 @@ h3{
 }
 
 .list-chips .slider ul li img{
-    height: 100px;
+    height: 80px;
     width: 70px;
 }
 .list-chips .slider ul li img:hover{
