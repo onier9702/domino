@@ -52,7 +52,7 @@ export const TablePlayer2 = () => {
             return;
         }
         const id = e.target.id;
-        console.log(value);
+        // console.log(value);
         
         const chipSelect = initialDataPlayer2.find( e => e.id === id );
         let chipClicked = chipSelect.chip;
@@ -65,7 +65,7 @@ export const TablePlayer2 = () => {
             //     } )
             //     .catch( err => console.log(err));
             const {msg, chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer2, undefined) )
-            console.log(msg);    
+            // console.log(msg);    
     
             // console.log(condition);
             switch (msg) {
@@ -182,19 +182,19 @@ export const TablePlayer2 = () => {
 
 
     const clickPlayUp = () => {
-        console.log('Play Up clicked');
+        // console.log('Play Up clicked');
         setCondit('Left');
     };
 
     const clickPlayDown = () => {
-        console.log('Play Down clicked');
+        // console.log('Play Down clicked');
         setCondit('Right');
     };
     
     if ( !showPlayerChips ){
       return (
         <div className="seeChips">
-            <h2>Player1</h2>
+            <h2>Player2</h2>
             <button type="button" onClick={handleSeeChips} >See My Chips</button>
         </div>
       )
@@ -204,7 +204,7 @@ export const TablePlayer2 = () => {
 
     <div /*className="portionTable"*/  >
         <div className="seeChips">
-            <h2>Player</h2>
+            <h2>Player2</h2>
             <button type="button" onClick={handlePassNextTurn} >Next Turn</button>
         </div>
         <div className="list-chips" /*style={{display: (turnComputer) ? 'none' : 'flex' }}*/ >

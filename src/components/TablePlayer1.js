@@ -58,13 +58,13 @@ export const TablePlayer1 = () => {
     if ( chipClicked[0] === value[0] || chipClicked[0] === value[1] || chipClicked[1] === value[0] || chipClicked[1] === value[1] || value.length === 0){
       dispatch( setChipId(id));
       const {msg, chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer1, undefined) )
-      console.log(msg);    
+      // console.log(msg);    
       // console.log(condition);
   
       switch (msg) {
         case 'Both':
             setShowButton(true);
-            console.log('here I put turn on true, case Both');
+            // console.log('here I put turn on true, case Both');
             dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
 
@@ -182,9 +182,9 @@ export const TablePlayer1 = () => {
   };
 
   const clickPlayDown = () => {
-      console.log('Play Down clicked');
+      // console.log('Play Down clicked');
       setCondit('Right');
-      console.log(condit);
+      // console.log(condit);
   };
 
   if ( !showPlayerChips ){
