@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,7 +11,7 @@ import { setOffOneTurn, setOneTurn, setTiedGame, setTurnOffComputer, setTurnOffT
 import Swal from 'sweetalert2';
 import { hasPlayerAnyValidChip } from '../helpers/hasPLayerValidChip';
 
-export const TablePlayer1 = () => {
+export const Player2Computer = () => {
 
   const dispatch = useDispatch();
   const { turnComputer, tied, oneTurn } = useSelector( state => state.ui);

@@ -1,7 +1,8 @@
 
-import { setChipId, setChipSel, setCount, setFirstChip, setLeftChip, setRightChip, setTableChip } from "../gameController/controllerSlice";
-import { setBothFalse, setBothTrue } from "../ui/uiSlice";
-import { deleteChipById, setInitialDataPlayer } from "./dataSlice";
+import { getTenChipsPlayers } from "../../helpers/getPlayersData";
+import { resetController, setChipId, setChipSel, setCount, setFirstChip, setLeftChip, setRightChip, setTableChip } from "../gameController/controllerSlice";
+import { resetUi, setBothFalse, setBothTrue, setEndGame, setOffEndGame } from "../ui/uiSlice";
+import { deleteChipById, resetDataGame, setInitialDataPlayer } from "./dataSlice";
 
 const setDataOnRedux = ( player1 = [], player2 = [] ) => {
 
@@ -37,7 +38,7 @@ const determinateSideAndFindChip = ( currentValue = [], id = '', player1 = [], p
                 if ( bothCondition === 'Left'){
                     right = currentValue[1];
                     for ( let i = 0; i<2; i++ ){
-                        if(currentValue[0] !== chipSel[i]){
+                        if(currentValue[0] !== chipSel[i]){ 
                             left = chipSel[i];
                         };
                     };
@@ -170,9 +171,34 @@ const startDeleteChip = ( id = '', player = '' ) => {
     };
 };
 
+const startResetGame = () => {
+
+    return (dispatch) => {
+
+        dispatch( resetDataGame() );
+        dispatch( resetController() );
+        dispatch( resetUi() );
+        dispatch( setEndGame() );
+        
+    };
+};
+
+const startNewGame = () => {
+    
+    return (dispatch) => {
+
+        dispatch( setOffEndGame() );
+        const [ dataPlayer1, dataPlayer2 ]  = getTenChipsPlayers();
+        dispatch( setDataOnRedux(dataPlayer1, dataPlayer2) );
+
+    };
+};
+
 export {
     setDataOnRedux,
     setFindedChip,
     determinateSideAndFindChip,
-    startDeleteChip
+    startDeleteChip,
+    startResetGame,
+    startNewGame,
 }

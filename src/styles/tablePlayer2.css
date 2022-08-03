@@ -1,11 +1,23 @@
-
+.seeChips{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    width: 100%;
+}
+.seeChips button{
+    border: none;
+    border-radius: 10px;
+    background-color: aquamarine;
+    cursor: pointer;
+    margin-right: 30px;
+}
 .portionTable{
     margin-bottom: 30px;
     padding: 10px;
 }
 
 h3{
-    color: blue;
+    /* color: blue; */
     margin-bottom: 20px;
 }
 .list-chips{
@@ -40,6 +52,13 @@ h3{
 
 .ulBtn{
     position: fixed;
-    top: 50%;
+    top: 30%;
     right: 0%;
+}
+.ulBtn li button{
+    border: none;
+    border-radius: 10px;
+    background-color: aquamarine;
+    cursor: pointer;
+    margin-right: 30px;
 }

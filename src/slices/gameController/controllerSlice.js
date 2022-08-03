@@ -37,23 +37,17 @@ export const controllerSlice = createSlice({
 
     setTableChip: (state, action) => {
         state.table = action.payload;
-    }
+    },
 
-    // setLeftChip: (state, action) => {
-    //     console.log(action.payload);
-    //     state.table = action.payload;
-    // },
-
-    // setRightChip: (state, action) => {
-    //     console.log(action.payload);
-    //     state.table = action.payload;
-    // },
-    // setFirstChip: (state, action) => {
-    //     console.log(action.payload);
-    //     state.table = action.payload;
-    // },
+    resetController: (state, action) => {
+        state.id = '';
+        state.pastValue = [];
+        state.chipSel = [];
+        state.value = [];
+        state.table = [];
+    },
 
   },
 })
 
-export const { setCount, setTableChip, setChipSel, setChipId } = controllerSlice.actions;
+export const { setCount, setTableChip, setChipSel, setChipId, resetController } = controllerSlice.actions;

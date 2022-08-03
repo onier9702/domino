@@ -1,12 +1,20 @@
 
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { startNewGame } from '../slices/dataPlayers/thunks';
 
 import '../styles/gameTable.css'; 
 
 export const Game = () => {
 
+  const dispatch = useDispatch();
   const {table = []} = useSelector(state => state.count);
+  const {endGame} = useSelector(state => state.ui);
+
+  const handleNewGame = () => {
+    dispatch( startNewGame() );
+  }
+
 
   return (
     <div className="gameTable">
@@ -22,6 +30,13 @@ export const Game = () => {
             ) )
           }
         </ul>
+
+        {
+          (endGame) && <button type="button" 
+                               style={{border: 'none', backgroundColor: 'blue', color: 'white' }}
+                               onClick={handleNewGame}
+                        >Start New Game</button>
+        }
 
     </div>
   )

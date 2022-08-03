@@ -1,84 +1,213 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { determinateSideAndFindChip, setFindedChip, startDeleteChip } from '../slices/dataPlayers/thunks';
+import Swal from 'sweetalert2';
+import { hasPlayerAnyValidChip } from '../helpers/hasPLayerValidChip';
+import { determinateSideAndFindChip, setFindedChip, startDeleteChip, startResetGame } from '../slices/dataPlayers/thunks';
 import { setChipId } from '../slices/gameController/controllerSlice';
+import { setOffOneTurn, setOneTurn, setTiedGame, setTurnComputer, setTurnOffPlayer2, setTurnOffTiedGame } from '../slices/ui/uiSlice';
 
 import '../styles/tablePlayer2.css';
 
 export const TablePlayer2 = () => {
 
-    const { initialDataPlayer2 } = useSelector( state => state.data);
     const dispatch = useDispatch();
+    const { turnComputer, tied, oneTurn } = useSelector( state => state.ui);
+
+    const { initialDataPlayer2 } = useSelector( state => state.data);
     const { value, table, pastValue, chipSel, id } = useSelector( state => state.count);
     const [showButton, setShowButton] = useState(false);
     const [condit, setCondit] = useState('');
+    const [showPlayerChips, setShowPlayerChips] = useState(false);
+    const [wasValidClick, setWasValidClick] = useState(false);
+    
 
     useEffect(() => {
 
-        dispatch( startDeleteChip( id, 'player2' ));
         // console.log(id);
-        let chipOtherWay;
-        if ( id ){
-            const {chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer2, condit) );
-            chipOtherWay = chip;
-        };
-    
-        dispatch( setFindedChip( chipOtherWay, condit, table, value ) );
-        // console.log(chipOtherWay);
+        if ( condit !== '' ){
 
-        setShowButton(false);
+            let chipOtherWay;
+            if ( id ){
+                const {chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer2, condit) );
+                chipOtherWay = chip;
+            };
+            
+            dispatch( setFindedChip( chipOtherWay, condit, table, value ) );
+            // console.log(chipOtherWay);
+            
+            setShowButton(false);
+            dispatch( startDeleteChip( id, 'player2' ));
+            setCondit('');
+            // dispatch(setTurnOffPlayer2());
+        }
         
       }, [setCondit, condit])
 
     const handleClickChip = (e) => { 
         // console.log(e.target.id);
-        const id = e.target.id;
-        dispatch( setChipId(id));
 
-        // dispatch( determinateSideAndFindChip(value, e.target.id, undefined, initialDataPlayer2) )
-        //     .then( resp => {
-        //         console.log(resp.msg);
-        //     } )
-        //     .catch( err => console.log(err));
-        const {msg, chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer2, undefined) )
-        console.log(msg);    
-
-        // console.log(condition);
-        switch (msg) {
-
-            case 'Both':
-                setShowButton(true);
-                // dispatch( setFindedChip( chip, 'Right', table, value ) );
-                // dispatch( startDeleteChip( id, 'player2' ));
-                break;
-                
-            case 'Left':
-                dispatch( setFindedChip( chip, 'Left', table, value ) );
-                dispatch( startDeleteChip( id, 'player2' ));
-                break;
-
-            case 'Right':
-                dispatch( setFindedChip( chip, 'Right', table, value ) );
-                dispatch( startDeleteChip( id, 'player2' ));
-                break;
-
-            case 'First Strike':
-                dispatch( setFindedChip( chip, 'First Strike', table, value ) );
-                dispatch( startDeleteChip( id, 'player2' ));
-                break;
-
-            case 'Pass':
-                break;
-
+        // Avoid double strike from one player
+        if ( !oneTurn ){
+            return;
         }
-    }
+        const id = e.target.id;
+        console.log(value);
+        
+        const chipSelect = initialDataPlayer2.find( e => e.id === id );
+        let chipClicked = chipSelect.chip;
+        if ( chipClicked[0] === value[0] || chipClicked[0] === value[1] || chipClicked[1] === value[0] || chipClicked[1] === value[1] || value.length === 0){
+            dispatch( setChipId(id));
+    
+            // dispatch( determinateSideAndFindChip(value, e.target.id, undefined, initialDataPlayer2) )
+            //     .then( resp => {
+            //         console.log(resp.msg);
+            //     } )
+            //     .catch( err => console.log(err));
+            const {msg, chip} = dispatch( determinateSideAndFindChip(value, id, undefined, initialDataPlayer2, undefined) )
+            console.log(msg);    
+    
+            // console.log(condition);
+            switch (msg) {
+    
+                case 'Both':
+                    setShowButton(true);
+                    dispatch( setOneTurn());
+                    setWasValidClick(true); // a chip was selected correctly
+                    // dispatch( setFindedChip( chip, 'Right', table, value ) );
+                    // dispatch( startDeleteChip( id, 'player2' ));
+                    break;
+                    
+                case 'Left':
+                    dispatch( setFindedChip( chip, 'Left', table, value ) );
+                    dispatch( startDeleteChip( id, 'player2' ));
+                    dispatch( setOneTurn());
+                    setWasValidClick(true); // a chip was selected correctly
+                    // dispatch(setTurnOffPlayer2());
+                   break;
+    
+                case 'Right':
+                    dispatch( setFindedChip( chip, 'Right', table, value ) );
+                    dispatch( startDeleteChip( id, 'player2' ));
+                    dispatch( setOneTurn());
+                    setWasValidClick(true); // a chip was selected correctly
+                    // dispatch(setTurnOffPlayer2());
+                   break;
+    
+                case 'First Strike':
+                    dispatch( setFindedChip( chip, 'First Strike', table, value ) );
+                    dispatch( startDeleteChip( id, 'player2' ));
+                    dispatch( setOneTurn());
+                    setWasValidClick(true); // a chip was selected correctly
+                    // dispatch(setTurnOffPlayer2());
+                   break;
+    
+                case 'Pass':
+                    break;
+    
+            };
+            
+        } else {
+            if ( value[0] ){
+                if ( !hasPlayerAnyValidChip( value, initialDataPlayer2) ){
+                    setWasValidClick(true);
+                }
+            }
+        }
+    };
+
+    const handleSeeChips = () => {
+
+        if ( value[0] ){
+
+            let m = false;
+            initialDataPlayer2.map( e => {  // To verify if game was tied
+                for ( let i = 0; i< 2; i++){
+                    for ( let j = 0; j<2; j++){
+    
+                        if ( e.chip[i] === value[j] ){
+                            m = true;
+                            break;
+                        }
+                    }
+                };
+            });
+            
+            if ( (tied === 50) && (!m) ){
+                dispatch( startResetGame() );
+                return Swal.fire('Tied Game o Juego Empatado', 'The Game was stuck or tied', 'info' );
+            };
+            if ( (tied === 50) && m ){
+                dispatch( setTurnOffTiedGame() );
+            };
+            if ( !m ){
+                dispatch( setTiedGame());
+            };
+        };
+
+        if ( (turnComputer === null) || !turnComputer ){
+            return setShowPlayerChips(true);
+        } else {
+            return Swal.fire('Player2 is Not your Turn', 'Please wait until your turn', 'warning');
+        };
+    };
+
+    const handlePassNextTurn = () => {
+        if (initialDataPlayer2.length === 0){
+            dispatch( startResetGame());
+            return Swal.fire('Felicidades', 'Player 2 has won', 'success');
+        }
+        setShowPlayerChips(false);
+        dispatch( setTurnComputer());
+
+        if ( value[0] ){
+            if ( !hasPlayerAnyValidChip( value, initialDataPlayer2) ){
+                if ( !oneTurn ){
+                    dispatch(setOneTurn());
+                }
+                if ( wasValidClick ){
+                  setWasValidClick(false);
+                }
+                return;
+        
+            };
+        };
+        if ( value[0] && wasValidClick){
+            dispatch( setOneTurn());
+        };
+
+        setWasValidClick(false);
+
+    };
+
+
+    const clickPlayUp = () => {
+        console.log('Play Up clicked');
+        setCondit('Left');
+    };
+
+    const clickPlayDown = () => {
+        console.log('Play Down clicked');
+        setCondit('Right');
+    };
+    
+    if ( !showPlayerChips ){
+      return (
+        <div className="seeChips">
+            <h2>Player1</h2>
+            <button type="button" onClick={handleSeeChips} >See My Chips</button>
+        </div>
+      )
+    };
 
   return (
 
     <div /*className="portionTable"*/  >
-        <h3>Player</h3>
-        <div className="list-chips">
+        <div className="seeChips">
+            <h2>Player</h2>
+            <button type="button" onClick={handlePassNextTurn} >Next Turn</button>
+        </div>
+        <div className="list-chips" /*style={{display: (turnComputer) ? 'none' : 'flex' }}*/ >
             <div className="slider">
                 <ul>
                     {
@@ -96,10 +225,10 @@ export const TablePlayer2 = () => {
                     (showButton) && 
                                     <ul className="ulBtn">
                                         <li>
-                                            <button onClick={() => setCondit('Left')}>Play Up</button>
+                                            <button onClick={clickPlayUp}>Play Up</button>
                                         </li>
                                         <li>
-                                            <button onClick={() => setCondit('Right')}>Play Down</button>
+                                            <button onClick={clickPlayDown}>Play Down</button>
                                         </li>
                                     </ul> 
                 }

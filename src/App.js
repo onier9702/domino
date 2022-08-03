@@ -12,6 +12,7 @@ import { getTenChipsPlayers } from './helpers/getPlayersData';
 import { setDataOnRedux } from './slices/dataPlayers/thunks';
 import { TablePlayer1 } from './components/TablePlayer1';
 import { Game } from './components/Game';
+import { Link } from 'react-router-dom';
 
 
 export const App = () => {
@@ -26,6 +27,7 @@ export const App = () => {
   return (
 
     <div className="all">
+        <Link to="/" style={{color: 'yellowgreen', paddingTop: 15}} > Go Home</Link>
         {/* <h2>Dominoes App</h2> */}
 
         <TablePlayer1 />

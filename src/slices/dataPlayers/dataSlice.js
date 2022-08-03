@@ -24,7 +24,12 @@ export const dataSlice = createSlice({
       }
    },
 
+   resetDataGame: (state) => {
+      state.initialDataPlayer1 = [];
+      state.initialDataPlayer2 = [];
+   }
+
   },
 })
 
-export const { setInitialDataPlayer, deleteChipById } = dataSlice.actions;
+export const { setInitialDataPlayer, deleteChipById, resetDataGame } = dataSlice.actions;
