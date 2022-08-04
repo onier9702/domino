@@ -1,10 +1,16 @@
 
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { startNewGame, startResetGame } from './slices/dataPlayers/thunks';
 
 import './styles/SelectorGame.css';
 
 export const SelectorGame = () => {
+
+    const dispatch = useDispatch();
+    dispatch( startResetGame() );
+    dispatch( startNewGame());
 
     const navigate = useNavigate();  // TODO: install react-router-dom
     const playTwoPlayers = () => {
@@ -34,12 +40,12 @@ export const SelectorGame = () => {
 
         <div className="info">
             <div className="info-cuadro">
-                <h3>To Play in mode Two Players</h3>
-                <p>  -- You and any friend, both can start play a dominoes data</p>
+                <h3>Two Players Mode</h3>
+                <p>  - You and any friend, both can start play a dominoes data</p>
             </div>
             <div className="info-cuadro">
-                <h3>To Play in mode Single Player</h3>
-                <p>  -- Just play against the computer</p>
+                <h3>Single Player Mode</h3>
+                <p>  - Just play against the computer</p>
             </div>
         </div>
 
