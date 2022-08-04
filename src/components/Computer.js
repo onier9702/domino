@@ -3,38 +3,41 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
+import '../styles/computerPlayer.css';
+
 import { determinateSideAndFindChip, setFindedChip, startDeleteChip, startResetGame } from '../slices/dataPlayers/thunks';
 import { setChipId } from '../slices/gameController/controllerSlice';
-import { setOffOneTurn, setOneTurn, setTiedGame, setTurnOffComputer, setTurnOffTiedGame } from '../slices/ui/uiSlice';
+import { setTiedGame, setTurnOffComputer, setTurnOffTiedGame } from '../slices/ui/uiSlice';
 import { logicComputer } from '../helpers/logicComputer';
+import { whoWinTiedGame } from '../helpers/whoWin';
 
 export const Computer = () => {
 
     const dispatch = useDispatch();
-    const { turnComputer, tied, oneTurn } = useSelector( state => state.ui);
+    const { turnComputer, tied } = useSelector( state => state.ui);
   
-    const { initialDataPlayer1 } = useSelector( state => state.data);
+    const { initialDataPlayer1, initialDataPlayer2 } = useSelector( state => state.data);
     const { value, table, pastValue, chipSel, id } = useSelector( state => state.count);
   
-    const [showButton, setShowButton] = useState(false);
-    const [condit, setCondit] = useState('');
+    // const [showButton, setShowButton] = useState(false);
+    const [condit, setCondit] = useState(false);
 
     useEffect(() => { 
       
         if (turnComputer){
-            handleSeeChips()/*.then( resp => () => {} ).catch( err => console.log(err))*/
-            const msg = logicComputer( initialDataPlayer1, value,);
+            handleSeeChips();/*.then( resp => () => {} ).catch( err => console.log(err))*/
+            const msg = logicComputer( initialDataPlayer1, value);
             if ( msg.ok ){
                 console.log('Inside');
                 if ( msg.cond ){
                     dispatch( setChipId(msg.chipId) );
-                    setCondit( 'Right' );
+                    setCondit(true);
                     console.log('exists cond');
                     console.log(msg.cond);
                     
                     return ;
                 } else {
-                    handleClickChip(msg.chipId);
+                    return handleClickChip(msg.chipId);
                 };
                 
             } else {
@@ -47,18 +50,19 @@ export const Computer = () => {
   
     useEffect(() => {
         
-        if (condit.length > 0){
+        if (condit){
 
             console.log('useEffect Cond called');
+            // console.log(condit.length);
             let chipOtherWay;
             if(id){
-              const {chip} = dispatch( determinateSideAndFindChip(value, id, initialDataPlayer1, undefined, condit) );
-              chipOtherWay = chip;
+                const {chip} = dispatch( determinateSideAndFindChip(value, id, initialDataPlayer1, undefined, 'Right') );
+                chipOtherWay = chip;
             }
           
-            dispatch( setFindedChip( chipOtherWay, condit, table, value ) );
-            console.log(chipOtherWay);
-            console.log(condit);
+            dispatch( setFindedChip( chipOtherWay, 'Right', table, value ) );
+            // console.log(chipOtherWay);
+            // console.log(condit);
           
             //   setShowButton(false);
             dispatch( startDeleteChip( id, 'player1' ));
@@ -73,10 +77,10 @@ export const Computer = () => {
   
     const handleClickChip = (ident = '') => { 
       
-        if ( !oneTurn ){
-            console.log('Already was clicked');
-            return;
-        }
+        // if ( !oneTurn ){
+        //     console.log('Already was clicked');
+        //     return;
+        // }
         // dispatch( setOneTurn());
         // console.log('Ya juge');
         //   const id = e.target.id;
@@ -126,48 +130,69 @@ export const Computer = () => {
   
     const handleSeeChips = () => {
     
-      if ( value[0] ){
+        if ( value[0] ){
   
-        let m = false;
-        initialDataPlayer1.map( e => {  // To verify if game was tied
-            for ( let i = 0; i< 2; i++){
-                for ( let j = 0;j<2; j++){
-  
-                    if ( e.chip[i] === value[j] ){
-                        m = true;
-                        break;
+            let m = false;
+            initialDataPlayer1.map( e => {  // To verify if game was tied
+                for ( let i = 0; i< 2; i++){
+                    for ( let j = 0;j<2; j++){
+                    
+                        if ( e.chip[i] === value[j] ){
+                            m = true;
+                            break;
+                        }
                     }
-                }
+                };
+            });
+            console.log('m' + m);
+            if ( (tied === 50) && (!m) ){
+                
+                const { winner, count1, count2 } = whoWinTiedGame(initialDataPlayer1, initialDataPlayer2);
+                switch (winner) {
+                  case 'Computer':
+                    Swal.fire('Sorry', `Computer won: \n Computer: ${count1}points \n You: ${count2}points`, 'info' );
+                    break;
+                  case 'Player':
+                    Swal.fire('Felicidades', `You win: Computer: ${count1}points  You: ${count2}points`, 'success' );
+                    break;
+                  case 'tied':
+                    Swal.fire('Tied Game o Juego Empatado', `Computer: ${count1}points  You: ${count1}points`, 'info' );
+                    break;
+                
+                  default:
+                    break;
+                };
+                return dispatch( startResetGame() );
+                
             };
-        });
-        if ( (tied === 50) && (!m) ){
-            dispatch( startResetGame() );
-            return Swal.fire('Tied Game o Juego Empatado', 'The Game was stuck or tied', 'info' );
-        };
-        if ( (tied === 50) && m ){
-            dispatch( setTurnOffTiedGame() );
-        };
-        if ( !m ){
-          dispatch( setTiedGame());
+            if ( (tied === 50) && m ){
+                dispatch( setTurnOffTiedGame() );
+                console.log('In handleSeeChips i turn off tied game');
+            };
+            if ( !m ){
+              dispatch( setTiedGame());
+              console.log('In handleSeeChips i set tied game');
+            };
+  
         };
   
-      };
-  
-      if ( (turnComputer === null) || turnComputer ){
-          return /*setShowPlayerChips(true)*/;
-      } else {
-          return Swal.fire('Player1 is Not your Turn', 'Please wait until your turn', 'warning');
-      };
     };
   
     const handlePassNextTurn = () => {
   
-      if (initialDataPlayer1.length === 0){
-        dispatch( startResetGame());
-        return Swal.fire('Sorry', 'Computer has won', 'success');
-      }
+        if (initialDataPlayer1.length === 0){
+            dispatch( startResetGame());
+            dispatch( setTurnOffComputer());
+            return Swal.fire('Sorry', 'Computer has won', 'success');
+        };
+
+        if (condit){
+            setCondit(false);
+        };
     //   setShowPlayerChips(false);
-      dispatch( setTurnOffComputer());
+        setTimeout(() => {
+            dispatch( setTurnOffComputer());
+        }, 2000);
     //   dispatch( setOffOneTurn());
     };
   
@@ -175,7 +200,7 @@ export const Computer = () => {
     return (
   
       <div   >
-          <div className="seeChips">
+          <div className="Computer">
             <h2>Computer</h2>
             {/* <button type="button" onClick={handlePassNextTurn} >Next Turn</button> */}
           </div>

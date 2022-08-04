@@ -5,17 +5,19 @@ import { Link } from 'react-router-dom';
 
 import './styles/app.css';
 
-import { Game } from './components/Game';
 import { Computer } from './components/Computer';
-import { Player2Computer } from './components/Player2Computer';
+import { Player2Computer } from './components/ComputerPLayer2';
+import { GameComputer } from './components/GameComputer';
+import { getTenChipsPlayers } from './helpers/getPlayersData';
+import { setDataOnRedux } from './slices/dataPlayers/thunks';
 
 
 
 export const ComputerApp = () => {
     
-    // const dispatch = useDispatch();
-    // const [ dataPlayer1, dataPlayer2 ]  = getTenChipsPlayers();
-    // dispatch( setDataOnRedux(dataPlayer1, dataPlayer2) );
+    const dispatch = useDispatch();
+    const [ dataPlayer1, dataPlayer2 ]  = getTenChipsPlayers();
+    dispatch( setDataOnRedux(dataPlayer1, dataPlayer2) );
 
 
 
@@ -28,7 +30,7 @@ export const ComputerApp = () => {
             {/* <TablePlayer1 /> */}
             <Computer />
 
-            <Game />
+            <GameComputer />
 
             <Player2Computer />
 

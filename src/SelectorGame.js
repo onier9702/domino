@@ -12,8 +12,8 @@ export const SelectorGame = () => {
     };
 
     const playSinglePlayer = () => {
-        // navigate('/siglePlayer');
-        console.log('singlePlayer still in development mode');
+        navigate('/siglePlayer');
+        // console.log('singlePlayer still in development mode');
     };
 
   return (
@@ -25,11 +25,11 @@ export const SelectorGame = () => {
                 onClick={playTwoPlayers}
         >Two Players</button>
 
-        <h4>Still Developing, it will be finish as soon as posible</h4>
+        {/* <h4>Still Developing, it will be finish as soon as posible</h4> */}
         <button className="btnTypeGame"
                 type="button"
                 onClick={playSinglePlayer}
-                disabled="true"
+                // disabled="true"
         >Single Player</button>
 
         <div className="info">
@@ -39,7 +39,7 @@ export const SelectorGame = () => {
             </div>
             <div className="info-cuadro">
                 <h3>To Play in mode Single Player</h3>
-                <p>  -- Just play against the computer, just one player is required</p>
+                <p>  -- Just play against the computer</p>
             </div>
         </div>
 

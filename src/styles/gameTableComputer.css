@@ -1,0 +1,52 @@
+
+
+.gameTableComputer{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px 10px 0px;
+    /* padding: 0px 10px 0px 10px; */
+    height: 70vh;
+    width: 80vw;
+}
+
+.gameTableComputer ul{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style-type: none;
+}
+.gameTableComputer ul li img{
+    height: 60px;
+    width: 50px;
+    
+}
+
+.rotateImg{
+    -webkit-transform:rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg); 
+}
+
+#rotate90{
+    -webkit-transform:rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg); 
+}
+
+@media (max-width: 530px){
+    .gameTableComputer{
+        height: 60vh;
+        /* width: 60vw; */
+    }
+    .gameTableComputer ul li img{
+        height: 40px;
+        width: 60px;
+        
+    }
+}
