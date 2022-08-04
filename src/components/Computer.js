@@ -150,10 +150,10 @@ export const Computer = () => {
                 const { winner, count1, count2 } = whoWinTiedGame(initialDataPlayer1, initialDataPlayer2);
                 switch (winner) {
                   case 'Computer':
-                    Swal.fire('Sorry', `Computer won: \n Computer: ${count1}points \n You: ${count2}points`, 'info' );
+                    Swal.fire('Computer win', ` \n Computer: ${count1}points \n You: ${count2}points`, 'info' );
                     break;
                   case 'Player':
-                    Swal.fire('Felicidades', `You win: Computer: ${count1}points  You: ${count2}points`, 'success' );
+                    Swal.fire('You Win', ` Computer: ${count1}points  You: ${count2}points`, 'success' );
                     break;
                   case 'tied':
                     Swal.fire('Tied Game o Juego Empatado', `Computer: ${count1}points  You: ${count1}points`, 'info' );
@@ -167,11 +167,11 @@ export const Computer = () => {
             };
             if ( (tied === 50) && m ){
                 dispatch( setTurnOffTiedGame() );
-                console.log('In handleSeeChips i turn off tied game');
+                // console.log('In handleSeeChips i turn off tied game');
             };
             if ( !m ){
               dispatch( setTiedGame());
-              console.log('In handleSeeChips i set tied game');
+            //   console.log('In handleSeeChips i set tied game');
             };
   
         };
@@ -183,7 +183,7 @@ export const Computer = () => {
         if (initialDataPlayer1.length === 0){
             dispatch( startResetGame());
             dispatch( setTurnOffComputer());
-            return Swal.fire('Sorry', 'Computer has won', 'success');
+            return Swal.fire('Computer Win', 'Sorry', 'success');
         };
 
         if (condit){
@@ -202,6 +202,7 @@ export const Computer = () => {
       <div   >
           <div className="Computer">
             <h2>Computer</h2>
+            <h5 style={{padding: 0, margin: 0,width: 'fit-content'}}>{`Remain: ${initialDataPlayer1.length}`}</h5>
             {/* <button type="button" onClick={handlePassNextTurn} >Next Turn</button> */}
           </div>
   

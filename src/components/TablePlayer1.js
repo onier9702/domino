@@ -9,13 +9,14 @@ import { setChipId } from '../slices/gameController/controllerSlice';
 import { setTiedGame, setTurnOffComputer, setTurnOffTiedGame } from '../slices/ui/uiSlice';
 import Swal from 'sweetalert2';
 import { hasPlayerAnyValidChip } from '../helpers/hasPLayerValidChip';
+import { whoWinTiedGame } from '../helpers/whoWin';
 
 export const TablePlayer1 = () => {
 
   const dispatch = useDispatch();
   const { turnComputer, tied } = useSelector( state => state.ui);
 
-  const { initialDataPlayer1 } = useSelector( state => state.data);
+  const { initialDataPlayer1, initialDataPlayer2 } = useSelector( state => state.data);
   const { value, table, pastValue, chipSel, id } = useSelector( state => state.count);
 //   const { both } = useSelector( state => state.ui);
   const [showButton, setShowButton] = useState(false);
@@ -142,8 +143,22 @@ export const TablePlayer1 = () => {
           };
       });
       if ( (tied === 50) && (!m) ){
-          dispatch( startResetGame() );
-          return Swal.fire('Tied Game o Juego Empatado', 'The Game was stuck or tied', 'info' );
+          const { winner, count1, count2 } = whoWinTiedGame(initialDataPlayer1, initialDataPlayer2);
+          switch (winner) {
+            case 'Computer':
+              Swal.fire('Player1 win ', ` Player1: ${count1}points \n Player2: ${count2}points`, 'info' );
+              break;
+            case 'Player':
+              Swal.fire('Player2 win ', ` Player1: ${count1}points  \n PLayer2: ${count2}points`, 'success' );
+              break;
+            case 'tied':
+              Swal.fire('Tied Game o Juego Empatado', `PLayer1: ${count1}points   Player2: ${count1}points`, 'info' );
+              break;
+          
+            default:
+              break;
+          };
+          return dispatch( startResetGame() );
       };
       if ( (tied === 50) && m ){
           dispatch( setTurnOffTiedGame() );
@@ -165,7 +180,7 @@ export const TablePlayer1 = () => {
 
     if (initialDataPlayer1.length === 0){
       dispatch( startResetGame());
-      return Swal.fire('Felicidades', 'Player 1 has won', 'success');
+      return Swal.fire('Player 1 has won', 'Congrats', 'success');
     }
     setShowPlayerChips(false);
     dispatch( setTurnOffComputer());

@@ -74,7 +74,7 @@ export const Player2Computer = () => {
       switch (msg) {
         case 'Both':
             setShowButton(true);
-            console.log('here I put turn on true, case Both');
+            // console.log('here I put turn on true, case Both');
             setOneTurn(false);
             // dispatch( setOneTurn());
             setWasValidClick(true); // a chip was selected correctly
@@ -144,15 +144,15 @@ export const Player2Computer = () => {
                 }
             };
         });
-        console.log('PLayer 2 , M: ' + m);
+        // console.log('PLayer 2 , M: ' + m);
         if ( (tied === 50) && (!m) ){
             const { winner, count1, count2 } = whoWinTiedGame(initialDataPlayer1, initialDataPlayer2);
             switch (winner) {
               case 'Computer':
-                Swal.fire('Sorry', `Computer won:  Computer: ${count1}points  You: ${count2}points`, 'info' );
+                Swal.fire('Computer win', `Statistics:  Computer: ${count1}points  You: ${count2}points`, 'info' );
                 break;
               case 'Player':
-                Swal.fire('Felicidades', `You win: \n Computer: ${count1}points \n You: ${count2}points`, 'success' );
+                Swal.fire('You win', `: Statistics\n Computer: ${count1}points \n You: ${count2}points`, 'success' );
                 break;
               case 'tied':
                 Swal.fire('Tied Game o Juego Empatado', `Computer: ${count1}points  You: ${count1}points`, 'info' );
@@ -168,10 +168,10 @@ export const Player2Computer = () => {
         };
         if ( (tied === 50) && m ){
             dispatch( setTurnOffTiedGame() );
-            console.log('I turn off setTiedGame');
+            // console.log('I turn off setTiedGame');
         };
         if ( !m ){
-          console.log('PLayer2 , I put tied game');
+          // console.log('PLayer2 , I put tied game');
           dispatch( setTiedGame());
         };
     
@@ -187,7 +187,7 @@ export const Player2Computer = () => {
     if (initialDataPlayer2.length === 0){
       dispatch( startResetGame());
       setOneTurn(true);
-      return Swal.fire('Felicidades', 'Player has won', 'success');
+      return Swal.fire('You Win', 'Congrats', 'success');
     }
     // setShowPlayerChips(false);
     dispatch( setTurnComputer());
@@ -219,14 +219,14 @@ export const Player2Computer = () => {
   };
 
   const clickPlayUp = () => {
-      console.log('Play Up clicked');
+      // console.log('Play Up clicked');
       setCondit('Left');
   };
 
   const clickPlayDown = () => {
-      console.log('Play Down clicked');
+      // console.log('Play Down clicked');
       setCondit('Right');
-      console.log(condit);
+      // console.log(condit);
   };
 
   // if ( !showPlayerChips ){

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { hasPlayerAnyValidChip } from '../helpers/hasPLayerValidChip';
+import { whoWinTiedGame } from '../helpers/whoWin';
 import { determinateSideAndFindChip, setFindedChip, startDeleteChip, startResetGame } from '../slices/dataPlayers/thunks';
 import { setChipId } from '../slices/gameController/controllerSlice';
 import { setOffOneTurn, setOneTurn, setTiedGame, setTurnComputer, setTurnOffPlayer2, setTurnOffTiedGame } from '../slices/ui/uiSlice';
@@ -14,7 +15,7 @@ export const TablePlayer2 = () => {
     const dispatch = useDispatch();
     const { turnComputer, tied } = useSelector( state => state.ui);
 
-    const { initialDataPlayer2 } = useSelector( state => state.data);
+    const { initialDataPlayer1, initialDataPlayer2 } = useSelector( state => state.data);
     const { value, table, pastValue, chipSel, id } = useSelector( state => state.count);
     const [showButton, setShowButton] = useState(false);
     const [condit, setCondit] = useState('');
@@ -147,8 +148,22 @@ export const TablePlayer2 = () => {
             });
             
             if ( (tied === 50) && (!m) ){
-                dispatch( startResetGame() );
-                return Swal.fire('Tied Game o Juego Empatado', 'The Game was stuck or tied', 'info' );
+                const { winner, count1, count2 } = whoWinTiedGame(initialDataPlayer1, initialDataPlayer2);
+                switch (winner) {
+                  case 'Computer':
+                    Swal.fire('Player1 win ', ` Player1: ${count1}points \n  Player2: ${count2}points`, 'info' );
+                    break;
+                  case 'Player':
+                    Swal.fire('PLayer2 win ', ` Player1: ${count1}points   PLayer2: ${count2}points`, 'success' );
+                    break;
+                  case 'tied':
+                    Swal.fire('Tied Game o Juego Empatado', `Player1: ${count1}points   Player2: ${count1}points`, 'info' );
+                    break;
+                
+                  default:
+                    break;
+                };
+                return dispatch( startResetGame() );
             };
             if ( (tied === 50) && m ){
                 dispatch( setTurnOffTiedGame() );
@@ -168,7 +183,7 @@ export const TablePlayer2 = () => {
     const handlePassNextTurn = () => {
         if (initialDataPlayer2.length === 0){
             dispatch( startResetGame());
-            return Swal.fire('Felicidades', 'Player 2 has won', 'success');
+            return Swal.fire('Player 2 win', 'Congrats', 'success');
         }
         setShowPlayerChips(false);
         dispatch( setTurnComputer());
